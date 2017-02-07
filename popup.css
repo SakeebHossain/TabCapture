@@ -1,5 +1,7 @@
 #wgtmsr {
-    width:150px;   
+    width:13em;
+    overflow: hidden;
+    padding-right: .5em;
 }
 
 #wgtmsr option {
@@ -11,6 +13,9 @@
 	background-color: skyblue;
 	color: white;
 	font-size: 2em;
+	padding-top: 2px;
+	padding-bottom: 5px;
+	margin: -5px -10px -10px -10px;
 }
 
 .confirm-button {
