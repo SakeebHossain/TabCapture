@@ -2,30 +2,20 @@
 <html>
 
   <head>
+    <link rel="stylesheet" type="text/css" href="popup.css">
     <title>TabCapture</title>
   </head>
 
   <body style="width: 20em">
       <!-- Section start: popup content -->
-      <p style="text-align: center; background-color: skyblue; color: white; font-size: 2em;">Tab<strong>Capture</strong></p>
+      <p id="popup-title">Tab<strong>Capture</strong></p>
 
-        <div>
-          <h3>Open a Saved Browser Config</h3>
+        <h3>Open a Saved Browser Config</h3>
 
-          <select>
+        <div class="dropdown_container">
+          <select name="wgtmsr" id="wgtmsr">
             <option disabled selected value> Select an option </option>
-          </select>
-
-          <button>Load</button>
-        </div>
-
-        <br />
-
-        <div>
-          <h3>Delete a Saved Browser Config</h3>
-
-          <select>
-            <option disabled selected value> Select an option </option>
+            <option> an extreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeemely long title </option>
           </select>
 
           <button>Delete</button>
@@ -33,10 +23,22 @@
 
         <br />
 
+        <h3>Delete a Saved Browser Config</h3>
+
+        <div class="dropdown_container">
+          <select name="wgtmsr" id="wgtmsr">
+            <option disabled selected value> Select an option </option>
+            <option> an extreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeemely long title </option>
+          </select>
+
+          <button>Delete</button>
+        </div>
+        <br />
+
         <div>
           <h3>Save Currently Open Tabs</h3>
 
-          <button style="float: right">Save</button>
+          <button class="confirm-button">Save</button>
 
           <div style="overflow: hidden; padding-right: .5em;">
              <input type="text" placeholder="Enter a title..." style="width: 100%;" />

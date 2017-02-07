@@ -1,0 +1,18 @@
+#wgtmsr {
+    width:150px;   
+}
+
+#wgtmsr option {
+    width:100px;   
+}
+
+#popup-title {
+	text-align: center;
+	background-color: skyblue;
+	color: white;
+	font-size: 2em;
+}
+
+.confirm-button {
+	float: right;
+}
