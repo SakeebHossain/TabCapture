@@ -22,7 +22,7 @@
 }
 
 #link-display {
-	background-image: url('fade-icon.png') !important;
-	background-repeat: no-repeat !important;
+	background-image: url('images/fade-icon.png');
+	background-repeat: no-repeat;
 	background-size: cover;
 }
