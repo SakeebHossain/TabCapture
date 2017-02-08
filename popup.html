@@ -9,45 +9,37 @@
   <body style="width: 20em">
       <!-- Section start: popup content -->
       <div id="popup-title">
-        <img style="vertical-align:middle" src="icon_small.png">
+        <img style="vertical-align:middle" src="images/icon_16.png">
         <span style="">Tab<strong>Capture</strong></span>
       </div>
 
-        <h3>Open a Saved Browser Config</h3>
+        <h4>Saved Browser Configs</h4>
 
         <div class="dropdown_container">
           <select name="wgtmsr" id="wgtmsr">
             <option disabled selected value> Select an option </option>
             <option> an extreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeemely long title </option>
           </select>
-
-          <button class="confirm-button">Load</button>
         </div>
-
-        <br />
-
-        <h3>Delete a Saved Browser Config</h3>
-
-        <div class="dropdown_container">
-          <select name="wgtmsr" id="wgtmsr">
-            <option disabled selected value> Select an option </option>
-            <option> an extreeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeemely long title </option>
-          </select>
-
-          <button class="confirm-button">Delete</button>
-        </div>
-        <br />
+        <button id="load-button">Load</button>
+        <button id="remove-button">Remove</button>
+        <button id="view-button">View</button>
 
         <div>
-          <h3>Save Currently Open Tabs</h3>
+          <h4>Save Currently Open Tabs</h4>
 
-          <button class="confirm-button">Save</button>
+          <button id="save-button">Save</button>
 
           <div id="wgtmsr">
-             <input type="text" placeholder="Enter a title..."/>
+             <input type="text" id="name-input" placeholder="Enter a title..."/>
           </div>​     
         </div>
       </div>
+
+      <hr />
+
+      <h4>Links in Selected Browser Config:</h4>
+      <textarea rows="10" cols="30" id="link-display" readonly></textarea>
       <!-- section end -->
 
       <!-- Section start: popup scripts -->

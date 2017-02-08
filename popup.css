@@ -1,6 +1,5 @@
 #wgtmsr {
-    width:13em;
-    overflow: hidden;
+    width:15em;
     padding-right: .5em;
 }
 
@@ -18,6 +17,12 @@
 	margin: -5px -10px -10px -10px;
 }
 
-.confirm-button {
+#save-button {
 	float: right;
+}
+
+#link-display {
+	background-image: url('fade-icon.png') !important;
+	background-repeat: no-repeat !important;
+	background-size: cover;
 }
