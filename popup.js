@@ -5,8 +5,14 @@ function message(msg) {
 function load() {
 	// Retrieve the currently selected title.
 	var title = document.getElementById("wgtmsr").value;
+
+	// Retrieve the links associated with that title from Storage API.
 	chrome.storage.sync.get(title, function(obj) {
-        console.log(obj);
+		linksList = (obj[title]).split(",");
+
+		// Open all links as new tabs in the new window.
+		// TO-DO
+
     });
 }
 
@@ -17,16 +23,27 @@ function remove() {
 
 function view() {
 	// Retrieve the currently selected title.
-	console.log(document.getElementById("wgtmsr").value);
+	var title = document.getElementById("wgtmsr").value;
+
+	// Retrieve the links associated with that title from Storage API
+	chrome.storage.sync.get(title, function(obj) {
+		linksList = (obj[title]).split(",");
+		for (i = 0; i < linksList.length; i++) {
+			document.getElementById("link-display").value += linksList[i] +"\n\n";
+		}
+    });
 }
 
 function save() {
 	// Retrieve title from input box.
 	var title = document.getElementById('name-input').value;
 
-	// Make sure a proper title was entered.
+	// Retrieve all existing titles and check if entered title matches any of them
+	// TO-DO
+
+	// Make sure a proper title was entered (non empty and not already existing).
 	if (title == "") {
-		message("Please enter a title.");
+		message("The title is empty or already exists.");
 	} else {
 		// Get url of all open tabs.
 		links = [];
@@ -39,10 +56,24 @@ function save() {
 		        });
 		    });
 
+		    // Convert list to string and make key value pair
+		    keyValuePair = {};
+		    strLinks = links.toString();
+		    keyValuePair[title] = strLinks;
+
+
 			// Store the title with Storage API.
-			chrome.storage.sync.set({title: links}, function() {
+			chrome.storage.sync.set(keyValuePair, function() {
 		        // Notify that we saved.
-		        message("Saved.");
+		        message("Saved browser config", title, "successfully.");
+
+		        // Add title to dropdown list.
+		        var option = document.createElement('option');
+		        option.text = title;
+		        document.querySelector("#wgtmsr").add(option);
+
+		        // Add the title to storage of titles so that on load, it appears next time.
+		        // TO-DO
 	        });
 		});
     }
