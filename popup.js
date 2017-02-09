@@ -18,14 +18,26 @@ function load() {
 
 function remove() {
 	// Retrieve the currently selected title.
-	console.log("remove");
+	var title = document.getElementById("wgtmsr").value;
+
+	var selectObject = document.querySelector("#wgtmsr");
+
+	for (i = 1; i < selectObject.length; i++) {
+		if (selectObject[i].innerHTML == title) {
+			selectObject.remove(i);
+			break;
+		}
+	}
+
+	// Also remove the title from chrome.storage so it won't load next time.
 }
 
 function view() {
 	// Retrieve the currently selected title.
 	var title = document.getElementById("wgtmsr").value;
+	document.getElementById("link-display").value = ""; // Clear the textarea.
 
-	// Retrieve the links associated with that title from Storage API
+	// Retrieve the links associated with that title from Storage API.
 	chrome.storage.sync.get(title, function(obj) {
 		linksList = (obj[title]).split(",");
 		for (i = 0; i < linksList.length; i++) {
@@ -38,7 +50,7 @@ function save() {
 	// Retrieve title from input box.
 	var title = document.getElementById('name-input').value;
 
-	// Retrieve all existing titles and check if entered title matches any of them
+	// Retrieve all existing titles and check if entered title matches any of them.
 	// TO-DO
 
 	// Make sure a proper title was entered (non empty and not already existing).
