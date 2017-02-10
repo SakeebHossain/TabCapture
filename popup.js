@@ -51,7 +51,12 @@ function save() {
 	var title = document.getElementById('name-input').value;
 
 	// Retrieve all existing titles and check if entered title matches any of them.
-	// TO-DO
+	chrome.storage.sync.get('savedTitles', function(obj) {
+		console.log(obj);
+
+
+    });
+
 
 	// Make sure a proper title was entered (non empty and not already existing).
 	if (title == "") {
@@ -91,6 +96,36 @@ function save() {
     }
 }
 
+function main() {
+	// Populate the dropdowns.
+	chrome.storage.sync.get('savedTitles', function(obj) {
+		// Check to see if we have already have some saved titles
+		if (Object.keys(obj).length == 0) {
+			console.log("No titles found! Initializing savedTitles...");
+			// No titles were found, so set the value of savedTitles to an empty string...
+			// ...so create the object
+		    keyValuePair = {};
+		    keyValuePair['savedTitles'] = " ";
+
+			chrome.storage.sync.set(keyValuePair, function() {
+		        // Add title to dropdown list.
+		        console.log("Initialized savedTitles.");
+	        });
+		}
+
+        // If we already have them saved, we can start populating the dropdowns with the links
+		else {
+			console.log("savedTitles found.");
+			savedLinks = obj['savedTitles'];
+
+		}
+
+    });
+
+
+
+}
+
 // Add event listeners once the DOM has fully loaded by listening for the
 // `DOMContentLoaded` event on the document, and adding your listeners to
 // specific elements when it triggers.
@@ -99,4 +134,5 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelector('#remove-button').addEventListener('click', remove);
   document.querySelector('#view-button').addEventListener('click', view);
   document.querySelector('#save-button').addEventListener('click', save);
+  main();
 });
