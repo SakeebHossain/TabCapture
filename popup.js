@@ -1,3 +1,6 @@
+//TO-DO : save() saves all tabs from all open windows. We want it to only save from the current tab.
+//TO-DO : add option to open new window or new browser. 
+
 function message(msg) {
 	document.getElementById('alert-box').innerHTML = msg;
 }
@@ -113,7 +116,6 @@ function save() {
 
 function main() {
 	// Check to see if we have already have some saved titles
-	chrome.storage.sync.clear();
 	chrome.storage.sync.get('savedTitles', function(obj) {
 
 		if (Object.keys(obj).length == 0) {
