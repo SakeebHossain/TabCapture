@@ -52,15 +52,19 @@ function save() {
 
 	// Retrieve all existing titles and check if entered title matches any of them.
 	chrome.storage.sync.get('savedTitles', function(obj) {
-		console.log(obj);
-
-
+		savedTitlesList = obj['savedTitles'].split(",");
+		for (i = 0; i < savedTitlesList.length; i++) {
+			if (title == savedTitlesList[i]) {
+				message("This title is already in use.");
+				return;
+			}
+		}
     });
-
 
 	// Make sure a proper title was entered (non empty and not already existing).
 	if (title == "") {
-		message("The title is empty or already exists.");
+		message("Please enter a title.");
+		return;
 	} else {
 		// Get url of all open tabs.
 		links = [];
@@ -79,27 +83,32 @@ function save() {
 		    keyValuePair[title] = strLinks;
 
 
-			// Store the title with Storage API.
+			// Store the title-link pair, as well as the title itself
 			chrome.storage.sync.set(keyValuePair, function() {
-		        // Notify that we saved.
+		        // First save the title-link pair...
 		        message("Saved browser config", title, "successfully.");
 
-		        // Add title to dropdown list.
-		        var option = document.createElement('option');
-		        option.text = title;
-		        document.querySelector("#wgtmsr").add(option);
+		        // ...then we add the the title to the saved title list by getting the current
+		        // and then updating it by appending the new title
+		        chrome.storage.sync.get('savedTitles', function(obj) {
+					savedTitlesList = obj['savedTitles'];
+					savedTitlesList = savedTitlesList + "," + title;
 
-		        // Add the title to storage of titles so that on load, it appears next time.
-		        // TO-DO
+				    keyValuePair = {};
+				    keyValuePair['savedTitles'] = savedTitlesList;
+				    chrome.storage.sync.set(keyValuePair, function() {
+				    	console.log("New title", title, "added.");
+				    	main();
+				    });
+			    });
 	        });
 		});
     }
 }
 
 function main() {
-	// Populate the dropdowns.
+	// Check to see if we have already have some saved titles
 	chrome.storage.sync.get('savedTitles', function(obj) {
-		// Check to see if we have already have some saved titles
 		if (Object.keys(obj).length == 0) {
 			console.log("No titles found! Initializing savedTitles...");
 			// No titles were found, so set the value of savedTitles to an empty string...
@@ -116,14 +125,17 @@ function main() {
         // If we already have them saved, we can start populating the dropdowns with the links
 		else {
 			console.log("savedTitles found.");
-			savedLinks = obj['savedTitles'];
-
+			savedTitles = obj['savedTitles'];
+			savedTitlesList = savedTitles.split(",");
+			
+			// Populate the dropdowns with the links.
+			for (i = 1; i < savedTitlesList.length; i++) {
+				var option = document.createElement('option');
+			    option.text = savedTitlesList[i];
+			    document.querySelector("#wgtmsr").add(option);
+			}
 		}
-
     });
-
-
-
 }
 
 // Add event listeners once the DOM has fully loaded by listening for the
