@@ -19,14 +19,8 @@ function remove() {
 
 	var selectObject = document.querySelector("#wgtmsr");
 
-	for (i = 1; i < selectObject.length; i++) {
-		if (selectObject[i].innerHTML == title) {
-			selectObject.remove(i);
-			break;
-		}
-	}
+    // Remove the title from chrome.storage so it won't load next time; both title and title-link pair
 
-	// Also remove the title from chrome.storage so it won't load next time.
 }
 
 function view() {
@@ -43,29 +37,43 @@ function view() {
     });
 }
 
-function save() {
-	// Retrieve title from input box.
-	var title = document.getElementById('name-input').value;
-
-	// Retrieve all existing titles and check if entered title matches any of them.
+function isValidTitle(title) {
+	// Check if entered title matches any of them.
 	chrome.storage.sync.get('savedTitles', function(obj) {
-		savedTitlesList = obj['savedTitles'].split(",");
+		savedTitlesList = (obj['savedTitles']).split(",");
 		for (i = 0; i < savedTitlesList.length; i++) {
 			if (title == savedTitlesList[i]) {
 				message("This title is already in use.");
-				return;
+				return false;
 			}
-		}
+		} 
     });
 
 	// Make sure a proper title was entered (non empty and not already existing).
 	if (title == "") {
 		message("Please enter a title.");
-		return;
-	} else {
+		return false;
+	} 
+
+	//Make sure there are no special character in the title.
+    var iChars = "~`!#$%^&*+=-[]\\\';,/{}|\":<>?";
+    for (var i = 0; i < title.length; i++) {
+       if (iChars.indexOf(title.charAt(i)) != -1) {
+           message("Characters ~`!#$%^&*+=-[]\\\';,/{}|\":<>? are not allowed in title.");
+           return false;
+       }
+    }
+    // If it passes all tests, return true!
+    return true
+}
+
+function save() {
+	// Retrieve title from input box.
+	var title = document.getElementById('name-input').value;
+
+	if (isValidTitle(title)) {
 		// Get url of all open tabs.
 		links = [];
-
 		chrome.windows.getAll({populate: true}, function(windows) {
 			// Collect all of the urls here.
 		    windows.forEach(function(window) {
@@ -100,11 +108,12 @@ function save() {
 			    });
 	        });
 		});
-    }
+	}
 }
 
 function main() {
 	// Check to see if we have already have some saved titles
+	chrome.storage.sync.clear();
 	chrome.storage.sync.get('savedTitles', function(obj) {
 
 		if (Object.keys(obj).length == 0) {
