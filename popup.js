@@ -2,7 +2,7 @@
 //TO-DO : add option to open new window or new browser. 
 //TO-DO : use JSON to store the titlelinks pairs, and use .keys() on that JSON to get titles.
 //TO-DO : after removing a title, it doesn't immediately refresh the dropdown; only after a reopen.
-//TO-DO : testing weird stuff with remove()
+//TO-DO : testing weird stuff with remove(), like doubling randomly, not deleting immediately, etc.
 //TO-DO : some "title"'s don't show up in messages()
 
 function message(msg) {
