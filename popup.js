@@ -1,5 +1,9 @@
 //TO-DO : save() saves all tabs from all open windows. We want it to only save from the current tab.
 //TO-DO : add option to open new window or new browser. 
+//TO-DO : use JSON to store the titlelinks pairs, and use .keys() on that JSON to get titles.
+//TO-DO : after removing a title, it doesn't immediately refresh the dropdown; only after a reopen.
+//TO-DO : testing weird stuff with remove()
+//TO-DO : some "title"'s don't show up in messages()
 
 function message(msg) {
 	document.getElementById('alert-box').innerHTML = msg;
@@ -20,10 +24,42 @@ function remove() {
 	// Retrieve the currently selected title.
 	var title = document.getElementById("wgtmsr").value;
 
-	var selectObject = document.querySelector("#wgtmsr");
+	if (title != "") {
 
-    // Remove the title from chrome.storage so it won't load next time; both title and title-link pair
+		var selectObject = document.querySelector("#wgtmsr");
 
+	    // Remove the title from chrome.storage so it won't load next time; both title and title:link pair
+	    // First remove the title...
+	    chrome.storage.sync.get('savedTitles', function(obj) {
+	    	savedTitles = obj['savedTitles'].split(",");
+	    	index = savedTitles.indexOf(title);
+	    	if (index > -1) {
+	    	    savedTitles.splice(index, 1);
+	    	}
+
+	    	// And reset it. Start by converting list to string and making key:value pair
+		    keyValuePair = {};
+		    strLinks = savedTitles.toString();
+		    keyValuePair['savedTitles'] = strLinks;
+
+
+			// Store the title:link pair, as well as the title itself
+			chrome.storage.sync.set(keyValuePair, function() {
+		        // First save the title:link pair...
+		        console.log("Deleting title", title, "....");
+	        });
+	    });
+
+	    // Next remove the title:link pair by setting
+	    chrome.storage.sync.remove(title, function(obj) {
+	    	console.log("Title", title, "successfully removed.");
+	    	message("Title", title, "successfully removed.");
+	    	main();
+	    });
+
+	    // Finally, reset the dropdown using main to reload everything from storage
+	    
+	}
 }
 
 function view() {
@@ -37,6 +73,8 @@ function view() {
 		for (i = 0; i < linksList.length; i++) {
 			document.getElementById("link-display").value += linksList[i] +"\n\n";
 		}
+		console.log("Viewing", title, ".");
+		message("Viewing", title, ".");
     });
 }
 
@@ -91,9 +129,9 @@ function save() {
 		    keyValuePair[title] = strLinks;
 
 
-			// Store the title-link pair, as well as the title itself
+			// Store the title:link pair, as well as the title itself
 			chrome.storage.sync.set(keyValuePair, function() {
-		        // First save the title-link pair...
+		        // First save the title:link pair...
 		        message("Saved browser config", title, "successfully.");
 
 		        // ...then we add the the title to the saved title list by getting the current
@@ -116,6 +154,7 @@ function save() {
 
 function main() {
 	// Check to see if we have already have some saved titles
+	// chrome.storage.sync.clear();
 	chrome.storage.sync.get('savedTitles', function(obj) {
 
 		if (Object.keys(obj).length == 0) {
@@ -137,7 +176,12 @@ function main() {
 			savedTitles = obj['savedTitles'];
 			savedTitlesList = savedTitles.split(",");
 			
-			// Populate the dropdowns with the links.
+			// Clear and then populate the dropdowns with the links.
+			for (i = 1; i < savedTitlesList.length; i++) {
+			    document.querySelector("#wgtmsr").remove(i);
+			    console.log("removed", document.querySelector("#wgtmsr").value);
+			}
+
 			for (i = 1; i < savedTitlesList.length; i++) {
 				var option = document.createElement('option');
 			    option.text = savedTitlesList[i];
