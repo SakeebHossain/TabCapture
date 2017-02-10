@@ -9,10 +9,7 @@ function load() {
 	// Retrieve the links associated with that title from Storage API.
 	chrome.storage.sync.get(title, function(obj) {
 		linksList = (obj[title]).split(",");
-
-		// Open all links as new tabs in the new window.
-		// TO-DO
-
+		chrome.windows.create({url:linksList});
     });
 }
 
@@ -109,6 +106,7 @@ function save() {
 function main() {
 	// Check to see if we have already have some saved titles
 	chrome.storage.sync.get('savedTitles', function(obj) {
+
 		if (Object.keys(obj).length == 0) {
 			console.log("No titles found! Initializing savedTitles...");
 			// No titles were found, so set the value of savedTitles to an empty string...
