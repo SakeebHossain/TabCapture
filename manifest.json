@@ -3,7 +3,7 @@
 
   "name": "TabCapture",
   "description": "Saves all open browsers ",
-  "version": "1.0",
+  "version": "0.0.0.1",
 
   "icons": { 
     "16":"images/icon_16.png", 
