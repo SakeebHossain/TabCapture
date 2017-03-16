@@ -28,6 +28,12 @@ function load() {
 			linksList = (obj[title]).split(",");
             chrome.windows.create({url:linksList});
 	    });
+    } else if (loadOption == "new_incognito_window") {
+		// Retrieve the links associated with that title from Storage API.
+		chrome.storage.sync.get(title, function(obj) {
+			linksList = (obj[title]).split(",");
+            chrome.windows.create({url:linksList, "incognito": true});
+	    });
     }
 }
 
