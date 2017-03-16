@@ -12,12 +12,23 @@ function message(msg) {
 function load() {
 	// Retrieve the currently selected title.
 	var title = document.getElementById("wgtmsr").value;
-
-	// Retrieve the links associated with that title from Storage API.
-	chrome.storage.sync.get(title, function(obj) {
-		linksList = (obj[title]).split(",");
-		chrome.windows.create({url:linksList});
-    });
+	var loadOption = document.getElementById("load_options").value;
+	
+	if (loadOption == "new_tab") {
+		// Retrieve the links associated with that title from Storage API.
+		chrome.storage.sync.get(title, function(obj) {
+			linksList = (obj[title]).split(",");
+			for (i = 0; i < linksList.length; i++) {
+				chrome.tabs.create({url:linksList[i]});
+			}
+	    });
+	} else if (loadOption == "new_window") {
+		// Retrieve the links associated with that title from Storage API.
+		chrome.storage.sync.get(title, function(obj) {
+			linksList = (obj[title]).split(",");
+            chrome.windows.create({url:linksList});
+	    });
+    }
 }
 
 function remove() {
